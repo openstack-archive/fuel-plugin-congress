@@ -1,0 +1,4 @@
+volumes_roles_mapping:
+  congress:
+    - {allocate_size: "min", id: "os"}
+volumes: []

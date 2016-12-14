@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# Add here any the actions which are required before plugin build
+# like packages building, packages downloading from mirrors and so on.
+# The script should return 0 if there were no errors.
+
+set -eux
+
+ROOT="$(dirname "$(readlink -f "$0")")"
+MODULES_DIR="${ROOT}/deployment_scripts/puppet/modules"
+TMP_DIR="${ROOT}/tmp"
+UBUNTU_REPO_DIR="${ROOT}/repositories/ubuntu"
+
+CONGRESS_PUPPET_REPO=${CONGRESS_PUPPET_REPO:-'https://github.com/openstack/puppet-congress.git'}
+CONGRESS_PUPPET_BRANCH=${CONGRESS_PUPPET_BRANCH:-'master'}
+CONGRESS_PUPPET_DST_DIR="${MODULES_DIR}/congress"
+
+CONGRESS_REPO=${CONGRESS_REPO:-'https://github.com/openstack/congress.git'}
+CONGRESS_BRANCH=${CONGRESS_BRANCH:-'stable/newton'}
+CONGRESS_DST_DIR="${TMP_DIR}/congress"
+
+CONGRESS_CLI_REPO=${CONGRESS_CLI_REPO:-'https://github.com/openstack/python-congressclient.git'}
+CONGRESS_CLI_BRANCH=${CONGRESS_CLI_BRANCH:-'stable/newton'}
+CONGRESS_CLI_DST_DIR="${TMP_DIR}/python-congressclient"
+
+function git_download {
+    local git_repo=$1
+    local git_branch=$2
+    local dst_dir=$3
+
+    rm -rvf "$dst_dir"
+    git clone "${git_repo}" --single-branch -b "${git_branch}" "${dst_dir}"
+}
+
+
+# Remove temp directory
+function clean {
+    rm -rf "${TMP_DIR}"
+}
+
+
+function check_fpm {
+    command -v fpm > /dev/null 2>&1 || { echo >&2 "ERROR: fpm ruby gem is not installed. Aborting."; exit 1; }
+
+}
+
+function build_deb {
+    pushd "${UBUNTU_REPO_DIR}"
+
+    fpm --force -s python -t deb --python-install-bin /usr/bin --python-install-lib /usr/lib/python2.7/dist-packages "${CONGRESS_DST_DIR}/setup.py"
+    fpm --force -s python -t deb --python-install-lib /usr/lib/python2.7/dist-packages "${CONGRESS_CLI_DST_DIR}/setup.py"
+
+    popd
+
+}
+check_fpm
+
+clean
+
+git_download "${CONGRESS_PUPPET_REPO}" "${CONGRESS_PUPPET_BRANCH}" "${CONGRESS_PUPPET_DST_DIR}"
+
+git_download "${CONGRESS_REPO}" "${CONGRESS_BRANCH}" "${CONGRESS_DST_DIR}"
+
+git_download "${CONGRESS_CLI_REPO}" "${CONGRESS_CLI_BRANCH}" "${CONGRESS_CLI_DST_DIR}"
+
+build_deb
+
+clean
+
+

@@ -1,0 +1,18 @@
+attributes:
+  metadata:
+    # Settings group can be one of "general", "security", "compute", "network",
+    # "storage", "logging", "openstack_services" and "other".
+    group: 'openstack_services'
+    db_password:
+      generator: 'password'
+    user_password:
+      generator: 'password'
+    user: 'congress'
+    port: 1789
+    service: 'congress-server'
+  debug:
+    value: false
+    label: 'Debug logging'
+    description: 'Debug logging mode provides more information, but requires more disk space.'
+    weight: 25
+    type: "checkbox"

@@ -1,0 +1,43 @@
+# These tasks will be merged into deployment graph. Here you
+# can specify new tasks for any roles, even built-in ones.
+
+- id: congress
+  type: group
+  role: [congress]
+  parameters:
+    strategy:
+      type: parallel
+
+- id: congress-install
+  type: puppet
+  version: 2.1.0
+  groups: [congress]
+  cross-depends:
+    - name: congress-db
+    - name: congress-keystone
+  parameters:
+    puppet_manifest: puppet/manifests/congress.pp
+    puppet_modules: puppet/modules:/etc/puppet/modules
+    timeout: 3600
+
+- id: congress-keystone
+  type: puppet
+  version: 2.1.0
+  groups: [primary-controller]
+  cross-depends:
+    - name: /(primary-)?keystone/
+  parameters:
+    puppet_manifest: puppet/manifests/congress-keystone.pp
+    puppet_modules: puppet/modules:/etc/puppet/modules
+    timeout: 1800
+
+- id: congress-db
+  type: puppet
+  version: 2.1.0
+  groups: [primary-controller]
+  cross-depends:
+    - name: /(primary-)?database/
+  parameters:
+    puppet_manifest: puppet/manifests/congess-db.pp
+    puppet_modules: puppet/modules:/etc/puppet/modules
+    timeout: 1800
