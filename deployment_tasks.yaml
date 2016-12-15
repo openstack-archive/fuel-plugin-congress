@@ -20,6 +20,17 @@
     puppet_modules: puppet/modules:/etc/puppet/modules
     timeout: 3600
 
+- id: congress-server
+  type: puppet
+  version: 2.1.0
+  groups: [congress]
+  cross-depends:
+    - name: congress-install
+  parameters:
+    puppet_manifest: puppet/manifests/server.pp
+    puppet_modules: puppet/modules:/etc/puppet/modules
+
+
 - id: congress-keystone
   type: puppet
   version: 2.1.0
