@@ -9,4 +9,4 @@
   requires: []
   incompatible: []
   label: "Install Congress"
-  description: "Component description (optional)"
+  description: "Policy service for Openstack"

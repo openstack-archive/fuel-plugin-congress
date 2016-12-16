@@ -29,6 +29,7 @@
   parameters:
     puppet_manifest: puppet/manifests/server.pp
     puppet_modules: puppet/modules:/etc/puppet/modules
+    timeout: 3600
 
 
 - id: congress-keystone

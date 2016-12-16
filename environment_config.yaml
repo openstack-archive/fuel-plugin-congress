@@ -2,7 +2,7 @@ attributes:
   metadata:
     # Settings group can be one of "general", "security", "compute", "network",
     # "storage", "logging", "openstack_services" and "other".
-    group: 'openstack_services'
+    group: 'other'
     db_password:
       generator: 'password'
     user_password:
@@ -17,7 +17,7 @@ attributes:
     weight: 25
     type: "checkbox"
   policies:
-    value: {}
+    value: '{}'
     label: 'Policies'
     description: 'Set of policies to configure for congress (in JSON format)'
     weight: 50
