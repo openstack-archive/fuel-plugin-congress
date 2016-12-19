@@ -41,7 +41,7 @@ class { '::osnailyfacter::mysql_access':
 
 Class['::openstack::galera::client'] ->
   Class['::osnailyfacter::mysql_access'] ->
-  Class['::tacker::db::mysql']
+  Class['::congress::db::mysql']
 
 class mysql::config {}
 include mysql::config
