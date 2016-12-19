@@ -39,7 +39,7 @@
   cross-depends:
     - name: /(primary-)?keystone/
   parameters:
-    puppet_manifest: puppet/manifests/congress-keystone.pp
+    puppet_manifest: puppet/manifests/keystone.pp
     puppet_modules: puppet/modules:/etc/puppet/modules
     timeout: 1800
 
@@ -50,6 +50,6 @@
   cross-depends:
     - name: /(primary-)?database/
   parameters:
-    puppet_manifest: puppet/manifests/congess-db.pp
+    puppet_manifest: puppet/manifests/db.pp
     puppet_modules: puppet/modules:/etc/puppet/modules
     timeout: 1800
