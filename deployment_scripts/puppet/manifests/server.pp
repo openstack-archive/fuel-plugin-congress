@@ -2,6 +2,8 @@ notice('MODULAR: congress/server.pp')
 
 $management_vip = hiera('management_vip')
 $public_vip     = hiera('public_vip')
+$network_scheme = hiera_hash('network_scheme', {})
+prepare_network_config($network_scheme)
 
 $plugin_hash = hiera_hash('congress', {})
 $congress_hash = $plugin_hash['metadata']
@@ -36,12 +38,12 @@ class { 'congress::keystone::authtoken':
 
 }
 
-class {'congress::server':
-  enabled             => $service_enabled,
-  bing_host           => $bind_host,
-  bind_port           => $bind_port
-}
-
 class {'congress::policy':
   policies            => $policies
+}
+
+class {'congress::server':
+  enabled             => $service_enabled,
+  bind_host           => $bind_host,
+  bind_port           => $bind_port
 }

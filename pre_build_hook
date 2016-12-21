@@ -63,7 +63,8 @@ git_download "${CONGRESS_REPO}" "${CONGRESS_BRANCH}" "${CONGRESS_DST_DIR}"
 
 git_download "${CONGRESS_CLI_REPO}" "${CONGRESS_CLI_BRANCH}" "${CONGRESS_CLI_DST_DIR}"
 
-build_deb
+# FIXME: make building deb packages optional
+# build_deb
 
 clean
 
