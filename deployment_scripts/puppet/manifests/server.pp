@@ -47,3 +47,6 @@ class {'congress::server':
   bind_host           => $bind_host,
   bind_port           => $bind_port
 }
+
+ensure_packages('python-antlr3')
+Package['python-antlr3'] -> Service<| tag == 'congress-service' |>
