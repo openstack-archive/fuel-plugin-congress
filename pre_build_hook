@@ -11,6 +11,8 @@ MODULES_DIR="${ROOT}/deployment_scripts/puppet/modules"
 TMP_DIR="${ROOT}/tmp"
 UBUNTU_REPO_DIR="${ROOT}/repositories/ubuntu"
 
+BUILD_DEBS=false
+
 CONGRESS_PUPPET_REPO=${CONGRESS_PUPPET_REPO:-'https://github.com/openstack/puppet-congress.git'}
 CONGRESS_PUPPET_BRANCH=${CONGRESS_PUPPET_BRANCH:-'master'}
 CONGRESS_PUPPET_DST_DIR="${MODULES_DIR}/congress"
@@ -53,19 +55,20 @@ function build_deb {
     popd
 
 }
-check_fpm
-
-clean
-
 git_download "${CONGRESS_PUPPET_REPO}" "${CONGRESS_PUPPET_BRANCH}" "${CONGRESS_PUPPET_DST_DIR}"
 
-git_download "${CONGRESS_REPO}" "${CONGRESS_BRANCH}" "${CONGRESS_DST_DIR}"
+if ["$BUILD_DEBS" == "true"]; then
+  check_fpm
 
-git_download "${CONGRESS_CLI_REPO}" "${CONGRESS_CLI_BRANCH}" "${CONGRESS_CLI_DST_DIR}"
+  clean
 
-# FIXME: make building deb packages optional
-# build_deb
+  git_download "${CONGRESS_REPO}" "${CONGRESS_BRANCH}" "${CONGRESS_DST_DIR}"
 
-clean
+  git_download "${CONGRESS_CLI_REPO}" "${CONGRESS_CLI_BRANCH}" "${CONGRESS_CLI_DST_DIR}"
+
+  build_deb
+  clean
+fi
+
 
 
