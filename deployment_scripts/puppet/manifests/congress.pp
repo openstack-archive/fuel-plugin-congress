@@ -29,7 +29,7 @@ $db_connection = os_database_connection({
 })
 
 class {'congress::db':
-  connection          => $db_connection
+  database_connection => $db_connection,
 }
 
 class { 'congress':
