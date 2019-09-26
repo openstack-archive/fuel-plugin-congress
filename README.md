@@ -1,4 +1,3 @@
-The Congress plugin for Fuel
-============================
+# This repo has moved to OpenDev
 
-The Congress plugin for Fuel is a plugin to install Congress.
+It can now be found at [https://opendev.org/x/fuel-plugin-congress](https://opendev.org/x/fuel-plugin-congress)

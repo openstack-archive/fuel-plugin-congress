@@ -1,6 +1,0 @@
-congress:
-  name: "Congress"
-  description: "Install Congress"
-  has_primary: false
-  public_ip_required: false
-  weight: 150
